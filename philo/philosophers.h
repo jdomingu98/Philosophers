@@ -6,7 +6,7 @@
 /*   By: jdomingu <jdomingu@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 14:37:58 by jdomingu          #+#    #+#             */
-/*   Updated: 2023/02/23 14:22:20 by jdomingu         ###   ########.fr       */
+/*   Updated: 2023/02/23 18:16:59 by jdomingu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,20 @@ typedef enum e_state
 {
 	EATING,
 	SLEEPING,
-	THINKING
-} t_state;
+	THINKING,
+	DEAD
+}	t_state;
 
 typedef struct s_philos
 {
-	int			philo;
-	int			last_eat;
-	t_state		state;
-	t_philos	*next_philo;
-} t_philos;
+	int				philo_name;
+	int				last_eat;
+	int				num_eats;
+	t_state			state;
+	pthread_mutex_t	fork;
+	pthread_t		thread;
+	t_philos		*next_philo;
+}					t_philos;
 
 typedef struct s_data
 {
@@ -41,10 +45,12 @@ typedef struct s_data
 	int			die_time;
 	int			eat_time;
 	int			sleep_time;
-	int			num_eats;
+	int			total_eats;
 	t_philos	*philo;
-} t_data;
+}				t_data;
 
-void	init_values(t_data *data, int argc, char **argv);
+int		ft_atoi(char *str);
+void	*ft_calloc(size_t count, size_t size);
+void	free_all_data(t_data *data);
 
 #endif
