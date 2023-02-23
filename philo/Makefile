@@ -6,28 +6,28 @@
 #    By: jdomingu <jdomingu@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/20 20:09:35 by jdomingu          #+#    #+#              #
-#    Updated: 2023/02/20 20:18:20 by jdomingu         ###   ########.fr        #
+#    Updated: 2023/02/23 14:23:24 by jdomingu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= philo
-CFLAGS	= -Wall -Wextra -Werror
-SRCS	= src/philosophers.c
+CFLAGS	= -Wall -Wextra -Werror #-g
+SRCS	= src/philosophers.c src/libft_functions.c
 OBJS	= $(SRCS:.c=.o)
 
 all: $(NAME)
 
 %.o: %.c
-	$(GCC) $(CFLAGS) -c $< -o $@
+	gcc $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)
-	$(GCC) $(CFLAGS) $(SRCS) -o $(NAME)
+	gcc $(CFLAGS) $(SRCS) -o $(NAME)
 
 clean:
-	$(RM) -rf $(OBJS)
+	rm -rf $(OBJS)
 
 fclean: clean
-	$(RM) -rf $(NAME)
+	rm -rf $(NAME)
 
 re: fclean all
 
