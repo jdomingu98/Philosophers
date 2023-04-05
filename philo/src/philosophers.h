@@ -1,63 +1,41 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philosophers.h                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jdomingu <jdomingu@student.42malaga.com>   +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/19 14:37:58 by jdomingu          #+#    #+#             */
-/*   Updated: 2023/02/25 18:37:37 by jdomingu         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
-# include <unistd.h>
-# include <stdio.h>
 # include <string.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <pthread.h>
 # include <stdlib.h>
 # include <sys/time.h>
-# include <pthread.h>
-# include <limits.h> 
+# include <limits.h>
 
-typedef enum e_state
+typedef struct s_philo
 {
-	EATING,
-	SLEEPING,
-	THINKING,
-	DEAD,
-	FORKING,
-	DONE
-}	t_state;
-
-typedef struct s_philos
-{
-	int				philo_name;
-	int				last_eat;
-	int				num_eats;
-	t_state			state;
-	pthread_mutex_t	right_fork;
+	int				id;
+	int				last_meal;
+	int				nbr_meals;
 	pthread_t		thread;
-	t_data			*data_rewind;
-}					t_philos;
+	pthread_mutex_t	fork_mtx;
+	pthread_mutex_t	meals_mtx; //inutil??
+	t_data			*data;
+}	t_philo;
 
 typedef struct s_data
 {
-	int				nbr_philos;
-	int				die_time;
-	int				eat_time;
-	int				sleep_time;
-	int				total_eats;
-	int				start_time;
-	int				someone_die;
-	pthread_mutex_t	message_mutex;
-	t_philos		*philo;
-}					t_data;
+	int				nphilos;
+	int				time_die;
+	int				time_eat;
+	int				time_sleep;
+	int				nbr_must_eat;
+	int				t0;
+	int				must_eat_count;
+	int				philo_death;
+	pthread_mutex_t	message_mtx;
+	pthread_mutex_t	eaten_mtx;
+	pthread_mutex_t philo_death_mtx;
+	t_philo			*philos;
+}	t_data;
 
-int		ft_atoi(char *str);
-void	*ft_calloc(size_t count, size_t size);
-void	free_all_data(t_data *data);
-void	*routine(void *philo_data);
+
 
 #endif

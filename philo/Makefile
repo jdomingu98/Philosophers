@@ -1,34 +1,27 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: jdomingu <jdomingu@student.42malaga.com>   +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/02/20 20:09:35 by jdomingu          #+#    #+#              #
-#    Updated: 2023/02/23 14:23:24 by jdomingu         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME 		=	philo
+CFLAGS 		= -Wall -Wextra -Werror
+NORMFLAG 	= -R CheckForbiddenSourceHeader
+SRC_DIR		= src
+FILES		= philosophers.c
+SRCS		= $(addprefix $(SRC_DIR)/, $(FILES))
+OBJS 		= $(SRCS:.c=.o)
 
-NAME	= philo
-CFLAGS	= -Wall -Wextra -Werror #-g
-SRCS	= src/philosophers.c src/libft_functions.c
-OBJS	= $(SRCS:.c=.o)
+all: 		$(NAME)
 
-all: $(NAME)
+$(NAME):	$(OBJS)
+			gcc $(CFLAGS) $(SRCS) -o $(NAME)
 
-%.o: %.c
-	gcc $(CFLAGS) -c $< -o $@
-
-$(NAME): $(OBJS)
-	gcc $(CFLAGS) $(SRCS) -o $(NAME)
+%.o:		%.c
+			gcc $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(OBJS)
+			rm $(OBJS)
 
-fclean: clean
-	rm -rf $(NAME)
+fclean:		clean
+			rm $(NAME)
 
-re: fclean all
+re: 		fclean all
 
-.PHONY:  all clean fclean re
+norm: 		norminette $(NORMFLAG) src
+
+.PHONY:		all clean fclean re norm
