@@ -1,5 +1,17 @@
-NAME 		=	philo
-CFLAGS 		= -Wall -Wextra -Werror
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jdomingu <jdomingu@student.42malaga.com>   +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/04/06 02:30:18 by jdomingu          #+#    #+#              #
+#    Updated: 2023/04/06 02:31:56 by jdomingu         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+NAME 		= philo
+CFLAGS 		= -Wall -Wextra -Werror -pthread
 NORMFLAG 	= -R CheckForbiddenSourceHeader
 SRC_DIR		= src
 FILES		= philosophers.c
@@ -15,13 +27,14 @@ $(NAME):	$(OBJS)
 			gcc $(CFLAGS) -c $< -o $@
 
 clean:
-			rm $(OBJS)
+			rm -f $(OBJS)
 
 fclean:		clean
-			rm $(NAME)
+			rm -f $(NAME)
 
 re: 		fclean all
 
-norm: 		norminette $(NORMFLAG) src
+norm:
+			norminette $(NORMFLAG) src
 
 .PHONY:		all clean fclean re norm

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jdomingu <jdomingu@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/06 01:52:11 by jdomingu          #+#    #+#             */
+/*   Updated: 2023/04/06 02:05:50 by jdomingu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
@@ -9,16 +21,7 @@
 # include <sys/time.h>
 # include <limits.h>
 
-typedef struct s_philo
-{
-	int				id;
-	int				last_meal;
-	int				nbr_meals;
-	pthread_t		thread;
-	pthread_mutex_t	fork_mtx;
-	pthread_mutex_t	meals_mtx; //inutil??
-	t_data			*data;
-}	t_philo;
+typedef struct s_philo	t_philo;
 
 typedef struct s_data
 {
@@ -32,10 +35,20 @@ typedef struct s_data
 	int				philo_death;
 	pthread_mutex_t	message_mtx;
 	pthread_mutex_t	eaten_mtx;
-	pthread_mutex_t philo_death_mtx;
+	pthread_mutex_t	philo_death_mtx;
 	t_philo			*philos;
 }	t_data;
 
-
+//meals_mtx es inutil creo
+typedef struct s_philo
+{
+	int				id;
+	int				last_meal;
+	int				nbr_meals;
+	pthread_t		thread;
+	pthread_mutex_t	fork_mtx;
+	pthread_mutex_t	meals_mtx;
+	t_data			*data;
+}	t_philo;
 
 #endif
