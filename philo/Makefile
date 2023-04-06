@@ -14,7 +14,7 @@ NAME 		= philo
 CFLAGS 		= -Wall -Wextra -Werror -pthread
 NORMFLAG 	= -R CheckForbiddenSourceHeader
 SRC_DIR		= src
-FILES		= philosophers.c
+FILES		= philosophers.c validation.c parser.c routine.c control_status.c free.c
 SRCS		= $(addprefix $(SRC_DIR)/, $(FILES))
 OBJS 		= $(SRCS:.c=.o)
 
