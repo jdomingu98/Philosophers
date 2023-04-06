@@ -1,4 +1,16 @@
-#include "philosphers.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jdomingu <jdomingu@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/06 03:27:44 by jdomingu          #+#    #+#             */
+/*   Updated: 2023/04/06 04:09:45 by jdomingu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philosophers.h"
 
 static int	init_threads(t_data *data)
 {
@@ -74,10 +86,6 @@ int	init_data(int ac, char **av, t_data *data)
 	int	i;
 
 	i = 0;
-	data = malloc(sizeof(t_data));
-	if (!data)
-		return (0);
-	memset(data, 0, sizeof(t_data));
 	data->nbr_must_eat = -1;
 	while (++i < ac)
 		set_arg_in_data(data, ft_atoi_long(av[i]), i);

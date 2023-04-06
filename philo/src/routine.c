@@ -1,17 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jdomingu <jdomingu@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/06 03:28:02 by jdomingu          #+#    #+#             */
+/*   Updated: 2023/04/06 04:09:52 by jdomingu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
-int	meals_eaten(t_data *data)
-{
-	int	res;
-
-	res = 0;
-	pthread_mutex_lock(&data->eaten_mtx);
-	if (data->nbr_must_eat == 0 || data->must_eat_count == data->nphilos)
-		res = 1;
-	return (pthread_mutex_unlock(&data->eaten_mtx), res);
-}
-
-static int	philo_died(t_data *data)
+int	philo_died(t_data *data)
 {
 	int	res;
 
@@ -39,6 +40,14 @@ static void	init_odd_philos_routine(t_philo *philo)
 	philo->last_meal = get_actual_time();
 }
 
+static void	taking_forks(t_philo *philo, t_data *data)
+{
+	print_status(philo, "has taken a fork");
+	pthread_mutex_lock(&philo->fork_mtx);
+	print_status(philo, "has taken a fork");
+	pthread_mutex_lock(&data->philos[philo->id % data->nphilos].fork_mtx);
+}
+
 void	*routine(void *philo_data)
 {
 	t_philo	*philo;
@@ -49,12 +58,9 @@ void	*routine(void *philo_data)
 	init_odd_philos_routine(philo);
 	while (!meals_eaten(data) && !philo_died(data))
 	{
-		pthread_mutex_lock(&philo->fork_mtx);
-		print_status(philo, "has taken a fork");
-		pthread_mutex_lock(&data->philos[philo->id % data->nphilos].fork_mtx);
-		print_status(philo, "has taken a fork");
-		pthread_mutex_lock(&philo->meals_mtx);
+		taking_forks(philo, data);
 		print_status(philo, "is eating");
+		pthread_mutex_lock(&philo->meals_mtx);
 		philo->last_meal = get_actual_time();
 		pthread_mutex_unlock(&philo->meals_mtx);
 		ft_sleep(data->time_eat);

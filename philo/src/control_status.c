@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   control_status.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jdomingu <jdomingu@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/06 03:27:33 by jdomingu          #+#    #+#             */
+/*   Updated: 2023/04/06 04:09:23 by jdomingu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 //Repasar gettimeofday
@@ -23,8 +35,21 @@ void	print_status(t_philo *philo, char *str)
 	if (meals_eaten(philo->data) || philo_died(philo->data))
 		return ;
 	pthread_mutex_lock(&philo->data->message_mtx);
-	printf("[%d]	%d %s\n", get_actual_time() - philo->data->t0, philo->id, str);
+	printf("[%d]	%d %s\n",
+		get_actual_time() - philo->data->t0, philo->id, str);
+	fflush(stdout);
 	pthread_mutex_unlock(&philo->data->message_mtx);
+}
+
+int	meals_eaten(t_data *data)
+{
+	int	res;
+
+	res = 0;
+	pthread_mutex_lock(&data->eaten_mtx);
+	if (data->nbr_must_eat == 0 || data->must_eat_count == data->nphilos)
+		res = 1;
+	return (pthread_mutex_unlock(&data->eaten_mtx), res);
 }
 
 //Uso de philo_death_mtx innecesario creo

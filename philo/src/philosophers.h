@@ -6,7 +6,7 @@
 /*   By: jdomingu <jdomingu@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 01:52:11 by jdomingu          #+#    #+#             */
-/*   Updated: 2023/04/06 02:05:50 by jdomingu         ###   ########.fr       */
+/*   Updated: 2023/04/06 04:09:40 by jdomingu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,16 @@ typedef struct s_philo
 	t_data			*data;
 }	t_philo;
 
-
 long	ft_atoi_long(char *str);
-int			valid_args(int ac, char **av);
-int			init_data(int ac, char **av, t_data *data);
+int		valid_args(int ac, char **av);
+int		init_data(int ac, char **av, t_data *data);
+int		philo_died(t_data *data);
 void	*routine(void *philo_data);
-int			meals_eaten(t_data *data);
-int			check_death(t_philo philo);
+int		meals_eaten(t_data *data);
+int		check_death(t_philo philo);
 void	print_status(t_philo *philo, char *str);
 void	ft_sleep(int ms);
-int			get_actual_time(void);
+int		get_actual_time(void);
 void	free_all(t_data *data);
 void	free_threads(t_philo *philos, int idx);
 void	free_all_mtx(t_data *data);

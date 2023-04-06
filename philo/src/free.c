@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jdomingu <jdomingu@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/06 03:27:38 by jdomingu          #+#    #+#             */
+/*   Updated: 2023/04/06 04:09:30 by jdomingu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 void	free_mtx(t_data *data, char option)
@@ -44,7 +56,7 @@ void	free_threads(t_philo *philos, int idx)
 //invalid pointer
 void	free_all(t_data *data)
 {
-	free_all_mtx(&data);
-	free(data.philos);
-    free(data);
+	free_all_mtx(data);
+	free(data->philos);
+	free(data);
 }
