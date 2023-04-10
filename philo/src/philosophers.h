@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdomingu <jdomingu@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: jdomingu <jdomingu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 01:52:11 by jdomingu          #+#    #+#             */
-/*   Updated: 2023/04/06 04:09:40 by jdomingu         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:52:30 by jdomingu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct s_philo
 	int				nbr_meals;
 	pthread_t		thread;
 	pthread_mutex_t	fork_mtx;
-	pthread_mutex_t	meals_mtx;
 	t_data			*data;
 }	t_philo;
 
@@ -64,7 +63,7 @@ int		get_actual_time(void);
 void	free_all(t_data *data);
 void	free_threads(t_philo *philos, int idx);
 void	free_all_mtx(t_data *data);
-void	free_philo_mtx(t_data *data, int idx, char option);
+void	free_philo_mtx(t_data *data, int idx);
 void	free_mtx(t_data *data, char option);
 
 #endif

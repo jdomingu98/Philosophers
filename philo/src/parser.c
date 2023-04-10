@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdomingu <jdomingu@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: jdomingu <jdomingu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 03:27:44 by jdomingu          #+#    #+#             */
-/*   Updated: 2023/04/06 04:09:45 by jdomingu         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:53:53 by jdomingu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,7 @@ static int	init_mtx(t_data *data)
 	while (i < data->nphilos)
 	{
 		if (pthread_mutex_init(&data->philos[i].fork_mtx, NULL))
-			return (free_philo_mtx(data, i, 'f'), free_mtx(data, 'a'), 0);
-		if (pthread_mutex_init(&data->philos[i].meals_mtx, NULL))
-			return (free_philo_mtx(data, i, 'm'), free_mtx(data, 'a'), 0);
+			return (free_philo_mtx(data, i), free_mtx(data, 'a'), 0);
 		i++;
 	}
 	return (1);

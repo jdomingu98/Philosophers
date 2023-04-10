@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdomingu <jdomingu@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: jdomingu <jdomingu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 01:52:21 by jdomingu          #+#    #+#             */
-/*   Updated: 2023/04/06 04:09:36 by jdomingu         ###   ########.fr       */
+/*   Updated: 2023/04/10 13:10:31 by jdomingu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ int	main(int argc, char **argv)
 {
 	t_data	*data;
 	int		i;
-	
-	i = 0;
+
 	if (argc != 5 && argc != 6)
 		return (-1);
 	if (!valid_args(argc, argv))
@@ -28,12 +27,6 @@ int	main(int argc, char **argv)
 	memset(data, 0, sizeof(t_data));
 	if (!init_data(argc, argv, data))
 		return (free(data), -1);
-	while (i < data->nphilos)
-	{
-		if (check_death(data->philos[i]) || meals_eaten(data))
-			break ;
-		i++;
-	}
 	i = 0;
 	while (i < data->nphilos)
 		pthread_join(data->philos[i++].thread, NULL);

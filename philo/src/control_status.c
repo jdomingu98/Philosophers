@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   control_status.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdomingu <jdomingu@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: jdomingu <jdomingu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 03:27:33 by jdomingu          #+#    #+#             */
-/*   Updated: 2023/04/06 04:09:23 by jdomingu         ###   ########.fr       */
+/*   Updated: 2023/04/10 13:11:34 by jdomingu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-//Repasar gettimeofday
 int	get_actual_time(void)
 {
 	struct timeval	time;
@@ -35,9 +34,8 @@ void	print_status(t_philo *philo, char *str)
 	if (meals_eaten(philo->data) || philo_died(philo->data))
 		return ;
 	pthread_mutex_lock(&philo->data->message_mtx);
-	printf("[%d]	%d %s\n",
-		get_actual_time() - philo->data->t0, philo->id, str);
-	fflush(stdout);
+	printf("%d %d %s\n", get_actual_time() - philo->data->t0,
+		philo->id, str);
 	pthread_mutex_unlock(&philo->data->message_mtx);
 }
 
@@ -52,20 +50,17 @@ int	meals_eaten(t_data *data)
 	return (pthread_mutex_unlock(&data->eaten_mtx), res);
 }
 
-//Uso de philo_death_mtx innecesario creo
 int	check_death(t_philo philo)
 {
 	int	res;
 
 	res = 0;
-	pthread_mutex_lock(&philo.meals_mtx);
 	if (philo.last_meal + philo.data->time_die < get_actual_time())
 	{
 		print_status(&philo, "died");
 		pthread_mutex_lock(&philo.data->philo_death_mtx);
 		philo.data->philo_death = 1;
-		pthread_mutex_unlock(&philo.data->philo_death_mtx);
 		res = 1;
 	}
-	return (pthread_mutex_unlock(&philo.meals_mtx), res);
+	return (pthread_mutex_unlock(&philo.data->philo_death_mtx), res);
 }

@@ -6,7 +6,7 @@
 /*   By: jdomingu <jdomingu@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 03:28:08 by jdomingu          #+#    #+#             */
-/*   Updated: 2023/04/06 04:10:05 by jdomingu         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:05:02 by jdomingu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ long	ft_atoi_long(char *str)
 		nbr = nbr * 10 + (str[i] - '0');
 		i++;
 	}
+	if (str[i])
+		return (-1);
 	return (nbr * sign);
 }
 
