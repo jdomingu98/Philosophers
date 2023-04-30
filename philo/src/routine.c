@@ -6,7 +6,7 @@
 /*   By: jdomingu <jdomingu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 03:28:02 by jdomingu          #+#    #+#             */
-/*   Updated: 2023/04/10 12:46:51 by jdomingu         ###   ########.fr       */
+/*   Updated: 2023/04/30 17:21:34 by jdomingu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,34 +17,32 @@ int	philo_died(t_data *data)
 	int	res;
 
 	res = 0;
-	pthread_mutex_lock(&data->philo_death_mtx);
+	pthread_mutex_lock(&data->death_mtx);
 	if (data->philo_death)
 		res = 1;
-	return (pthread_mutex_unlock(&data->philo_death_mtx), res);
+	return (pthread_mutex_unlock(&data->death_mtx), res);
 }
 
-static void	check_if_total_meals_eaten(t_philo *philo)
+static void	check_if_total_meals_eaten(t_philo *philo, t_data *data)
 {
-	if (philo->nbr_meals == philo->data->nbr_must_eat)
+	if (philo->num_meals == data->total_meals)
 	{
-		pthread_mutex_lock(&philo->data->eaten_mtx);
-		philo->data->must_eat_count++;
-		pthread_mutex_unlock(&philo->data->eaten_mtx);
+		pthread_mutex_lock(&data->eaten_mtx);
+		data->meals_eaten++;
+		pthread_mutex_unlock(&data->eaten_mtx);
 	}
 }
 
 static void	philo_routine(t_data *data, t_philo *philo, pthread_mutex_t *f1,
 			pthread_mutex_t *f2)
 {
-	while (!meals_eaten(data) && !check_death(*philo) && !philo_died(data))
+	while (!meals_eaten(data) && !philo_died(data))
 	{
 		pthread_mutex_lock(f1);
 		print_status(philo, "has taken a fork");
 		if (f1 == f2)
 		{
-			while (!check_death(*philo))
-				ft_sleep(5);
-			print_status(philo, "died");
+			pthread_mutex_unlock(f1);
 			break ;
 		}
 		pthread_mutex_lock(f2);
@@ -52,11 +50,11 @@ static void	philo_routine(t_data *data, t_philo *philo, pthread_mutex_t *f1,
 		print_status(philo, "is eating");
 		philo->last_meal = get_actual_time();
 		ft_sleep(data->time_eat);
-		philo->nbr_meals++;
-		check_if_total_meals_eaten(philo);
-		print_status(philo, "is sleeping");
+		philo->num_meals++;
+		check_if_total_meals_eaten(philo, data);
 		pthread_mutex_unlock(f1);
 		pthread_mutex_unlock(f2);
+		print_status(philo, "is sleeping");
 		ft_sleep(data->time_sleep);
 		print_status(philo, "is thinking");
 	}
@@ -70,11 +68,11 @@ void	*routine(void *philo_data)
 
 	philo = (t_philo *) philo_data;
 	data = philo->data;
-	if (philo->id == data->nphilos)
-		next_philo = &data->philos[0];
+	if (!philo->next)
+		next_philo = data->philos;
 	else
-		next_philo = &data->philos[philo->id];
-	if (philo->id % 2 != 0)
+		next_philo = philo->next;
+	if (philo->id % 2)
 	{
 		ft_sleep(5);
 		philo->last_meal = get_actual_time();

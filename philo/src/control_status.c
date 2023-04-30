@@ -6,7 +6,7 @@
 /*   By: jdomingu <jdomingu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 03:27:33 by jdomingu          #+#    #+#             */
-/*   Updated: 2023/04/10 13:11:34 by jdomingu         ###   ########.fr       */
+/*   Updated: 2023/04/30 17:20:46 by jdomingu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void	print_status(t_philo *philo, char *str)
 {
 	if (meals_eaten(philo->data) || philo_died(philo->data))
 		return ;
-	pthread_mutex_lock(&philo->data->message_mtx);
-	printf("%d %d %s\n", get_actual_time() - philo->data->t0,
+	pthread_mutex_lock(&philo->data->write_mtx);
+	printf("%d	%d %s\n", get_actual_time() - philo->data->t0,
 		philo->id, str);
-	pthread_mutex_unlock(&philo->data->message_mtx);
+	pthread_mutex_unlock(&philo->data->write_mtx);
 }
 
 int	meals_eaten(t_data *data)
@@ -45,22 +45,20 @@ int	meals_eaten(t_data *data)
 
 	res = 0;
 	pthread_mutex_lock(&data->eaten_mtx);
-	if (data->nbr_must_eat == 0 || data->must_eat_count == data->nphilos)
+	if (data->meals_eaten == data->nphilos)
 		res = 1;
 	return (pthread_mutex_unlock(&data->eaten_mtx), res);
 }
 
-int	check_death(t_philo philo)
+int	check_death(t_philo *philo)
 {
-	int	res;
-
-	res = 0;
-	if (philo.last_meal + philo.data->time_die < get_actual_time())
+	if (philo->last_meal + philo->data->time_die < get_actual_time())
 	{
-		print_status(&philo, "died");
-		pthread_mutex_lock(&philo.data->philo_death_mtx);
-		philo.data->philo_death = 1;
-		res = 1;
+		print_status(philo, "died");
+		pthread_mutex_lock(&philo->data->death_mtx);
+		philo->data->philo_death = 1;
+		pthread_mutex_unlock(&philo->data->death_mtx);
+		return (1);
 	}
-	return (pthread_mutex_unlock(&philo.data->philo_death_mtx), res);
+	return (0);
 }

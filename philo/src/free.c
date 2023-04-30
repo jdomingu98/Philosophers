@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdomingu <jdomingu@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: jdomingu <jdomingu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 03:27:38 by jdomingu          #+#    #+#             */
-/*   Updated: 2023/04/06 04:09:30 by jdomingu         ###   ########.fr       */
+/*   Updated: 2023/04/30 17:20:54 by jdomingu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,44 +14,48 @@
 
 void	free_mtx(t_data *data, char option)
 {
-	pthread_mutex_destroy(&data->message_mtx);
+	pthread_mutex_destroy(&data->write_mtx);
 	if (option == 'a')
-		pthread_mutex_destroy(&data->philo_death_mtx);
+		pthread_mutex_destroy(&data->death_mtx);
 	if (option == 'a' || option == 'd')
 		pthread_mutex_destroy(&data->eaten_mtx);
 }
 
-void	free_philo_mtx(t_data *data, int idx)
+void	free_philo_mtx(t_data *data)
 {
-	int	i;
+	t_philo	*tmp;
 
-	i = 0;
-	while (i < idx)
+	tmp = data->philos;
+	while (tmp)
 	{
-		pthread_mutex_destroy(&data->philos[i].fork_mtx);
-		i++;
+		pthread_mutex_destroy(&tmp->fork_mtx);
+		tmp = tmp->next;
 	}
-	pthread_mutex_destroy(&data->philos[i].fork_mtx);
 }
 
 void	free_all_mtx(t_data *data)
 {
 	free_mtx(data, 'a');
-	free_philo_mtx(data, data->nphilos);
+	free_philo_mtx(data);
 }
 
-void	free_threads(t_philo *philos, int idx)
+void	free_threads(t_data *data)
 {
-	int	i;
+	t_philo	*tmp;
 
-	i = 0;
-	while (i < idx)
-		pthread_detach(philos[i++].thread);
+	tmp = data->philos;
+	while (tmp)
+	{
+		if (tmp->thread)
+			pthread_detach(tmp->thread);
+		tmp = tmp->next;
+	}
 }
 
 void	free_all(t_data *data)
 {
 	free_all_mtx(data);
+	ft_lstclear_philos(&data->philos);
 	free(data->philos);
 	free(data);
 }

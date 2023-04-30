@@ -3,18 +3,18 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jdomingu <jdomingu@student.42malaga.com>   +#+  +:+       +#+         #
+#    By: jdomingu <jdomingu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/06 02:30:18 by jdomingu          #+#    #+#              #
-#    Updated: 2023/04/10 12:26:56 by jdomingu         ###   ########.fr        #
+#    Updated: 2023/04/29 20:58:03 by jdomingu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 		= philo
-CFLAGS 		= -Wall -Wextra -Werror -pthread #-g
+CFLAGS 		= -Wall -Wextra -Werror -pthread -g
 NORMFLAG 	= -R CheckForbiddenSourceHeader
 SRC_DIR		= src
-FILES		= philosophers.c validation.c parser.c routine.c control_status.c free.c
+FILES		= philosophers.c validation.c parser.c routine.c control_status.c free.c list_utils.c
 SRCS		= $(addprefix $(SRC_DIR)/, $(FILES))
 OBJS 		= $(SRCS:.c=.o)
 
