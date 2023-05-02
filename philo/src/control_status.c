@@ -45,7 +45,7 @@ int	meals_eaten(t_data *data)
 
 	res = 0;
 	pthread_mutex_lock(&data->eaten_mtx);
-	if (data->meals_eaten == data->nphilos)
+	if (data->total_meals == 0 && data->meals_eaten == data->nphilos)
 		res = 1;
 	return (pthread_mutex_unlock(&data->eaten_mtx), res);
 }
